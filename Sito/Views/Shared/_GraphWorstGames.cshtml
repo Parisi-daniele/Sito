@@ -1,0 +1,106 @@
+﻿<div class="card mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Classifica bottom 10</h6>
+        <button id="reloadworstgames" class="btn btn-warning btn-sm"><i class="fa fa-redo"></i></button>
+    </div>
+    <div class="card-body">
+        <div id="wostgames"></div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var c1 = Highcharts.chart('wostgames', {
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: null
+        },
+        subtitle: {
+            text: null
+        },
+        xAxis: {
+            categories: [],
+            title: {
+                text: null
+            }
+        },
+        yAxis: {
+            min: 0,
+            max: 100,
+            title: {
+                text: null
+            },
+            labels: {
+                valueDecimals: 2,
+                overflow: 'justify'
+            }
+        },
+        tooltip: {
+            pointFormat: '{point.y:.2f}</b><br/>',
+            valueSuffix: ' / 100'
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        exporting: {
+            enabled: false
+        },
+        legend: {
+            enabled: false
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            name: 'Year 1800',
+            data: []
+        }]
+    });
+
+
+    $("#reloadworstgames").on("click", function () {
+        $.ajax({
+            url: "@Url.Action("GetLowStats", "Home")",
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                var a = JSON.parse(data.lista);
+
+                var series = [];
+                var categories = [];
+                $.each(a, function (index, item) {
+                    series.push(parseFloat(parseFloat(item.rating).toFixed(2)));
+                    categories.push(item.name);
+                });
+
+                c1.xAxis[0].update({ categories: categories });
+                c1.series[0].setData(series);
+            }
+        });
+    });
+
+    $.ajax({
+        url: "@Url.Action("GetLowStats", "Home")",
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            var a = JSON.parse(data.lista);
+
+            var series = [];
+            var categories = [];
+            $.each(a, function (index, item) {
+                series.push(parseFloat(parseFloat(item.rating).toFixed(2)));
+                categories.push(item.name);
+            });
+
+            c1.xAxis[0].update({ categories: categories });
+            c1.series[0].setData(series);
+
+        }
+    });
+</script>

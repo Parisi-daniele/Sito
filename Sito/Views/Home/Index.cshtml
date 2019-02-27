@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        @{ 
+            Html.RenderPartial("_GraphAverageRatings");
+        }
+    </div>
+    <div class="col-md-4">
+        @{
+            Html.RenderPartial("_GraphBestGames");
+        }
+    </div>
+    <div class="col-md-4">
+        @{
+            Html.RenderPartial("_GraphWorstGames");
+        }
+    </div>
+</div>

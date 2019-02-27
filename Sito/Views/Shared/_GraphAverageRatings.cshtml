@@ -1,0 +1,54 @@
+﻿<style>
+    #averageChart tspan {
+        font-size: 12px !important;
+    }
+</style>
+<div class="card mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Media voti Top/Bottom 10</h6>
+        <button id="reloadpie" class="btn btn-warning btn-sm"><i class="fa fa-redo"></i></button>
+    </div>
+    <div class="card-body">
+        <div id="averageChart"></div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var g = new JustGage({
+        id: "averageChart",
+        value: 0,
+        min: 0,
+        max: 100,
+        decimals: true,
+        title: "Media",
+        relativeGaugeSize: true,
+        customSectors: [
+            {
+                "lo": 0,
+                "hi": 100,
+                "color": "rgb(124,181,236)"
+            }]
+    });
+
+    $("#reloadpie").on("click", function () {
+        $.ajax({
+            url: "@Url.Action("GetAvgStats", "Home")",
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                var a = JSON.parse(data.lista);
+                g.refresh(a);
+            }
+        });
+    });
+    $.ajax({
+        url: "@Url.Action("GetAvgStats", "Home")",
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            var a = JSON.parse(data.lista);
+            console.log(a);
+            g.refresh(a);
+        }
+    });
+</script>
