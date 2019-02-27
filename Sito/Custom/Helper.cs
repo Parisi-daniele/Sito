@@ -10,12 +10,15 @@ namespace Sito.Custom
 {
     public class Helper
     {
-        public static string GetResponseFromUrl(string url)
+        public static string GetResponseFromUrl(string url, string[] headers, string method = "GET")
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "POST";
+            request.Method = method;
             request.Accept = "application/json";
-            request.Headers.Add("user-key: 4aa74ccdaef43e0c08af80501237ca27");
+            headers.ToList().ForEach(header => {
+                request.Headers.Add(header);
+            });
+            // request.Headers.Add("user-key: 4aa74ccdaef43e0c08af80501237ca27");
 
             string responseString;
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();

@@ -69,7 +69,7 @@
             method: "GET",
             dataType: "json",
             success: function (data) {
-                var a = JSON.parse(data.lista);
+                var a = data.lista;
 
                 var series = [];
                 var categories = [];
@@ -89,7 +89,7 @@
         method: "GET",
         dataType: "json",
         success: function (data) {
-            var a = JSON.parse(data.lista);
+            var a = data.lista;
 
             var series = [];
             var categories = [];

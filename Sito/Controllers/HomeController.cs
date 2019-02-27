@@ -34,11 +34,10 @@ namespace Sito.Controllers
         [HttpGet]
         public ActionResult GetAvgStats()
         {
-            string hi = Helper.GetResponseFromUrl("https://api-v3.igdb.com/games/?fields=name,rating&filter[rating][gte]=1&order=rating:desc&limit=10");
-            List<GameDetails> gd1 = Custom.Helper.GetGameDetailsFromJSON(hi);
-
-            string low = Helper.GetResponseFromUrl("https://api-v3.igdb.com/games/?fields=name,rating&order=rating:asc&limit=10");
-            List<GameDetails> gd2 = Custom.Helper.GetGameDetailsFromJSON(low);
+            // string hi = Helper.GetResponseFromUrl("https://api-v3.igdb.com/games/?fields=name,rating&filter[rating][gte]=1&order=rating:desc&limit=10");
+            List<GameDetails> gd1 = IGDBEndPoint.GetBest10Games();
+            
+            List<GameDetails> gd2 = IGDBEndPoint.GetWorst10Games();
             
             double avg = 0;
             gd1.ForEach(i => avg += i.rating);
@@ -52,15 +51,15 @@ namespace Sito.Controllers
         [HttpGet]
         public ActionResult GetHighStats()
         {
-            string responseString = Helper.GetResponseFromUrl("https://api-v3.igdb.com/games/?fields=name,rating&filter[rating][gte]=1&order=rating:desc&limit=10");
-            return Json(new { lista = responseString }, JsonRequestBehavior.AllowGet);
+            List<GameDetails> gd1 = IGDBEndPoint.GetBest10Games();
+            return Json(new { lista = gd1 }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public JsonResult GetLowStats()
         {
-            string responseString = Helper.GetResponseFromUrl("https://api-v3.igdb.com/games/?fields=name,rating&order=rating:asc&limit=10");
-            return Json(new { lista = responseString }, JsonRequestBehavior.AllowGet);
+            List<GameDetails> gd2 = IGDBEndPoint.GetWorst10Games();
+            return Json(new { lista = gd2 }, JsonRequestBehavior.AllowGet);
         }
     }
 }
