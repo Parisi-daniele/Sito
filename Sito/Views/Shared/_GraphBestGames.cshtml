@@ -79,25 +79,51 @@
 
                 c2.xAxis[0].update({ categories: categories });
                 c2.series[0].setData(series);
+
+                $.cookie("histats", JSON.stringify(data.lista), {
+                    expires: new Date().getTime() + (24 * 60 * 60 * 1000),
+                    path: "/"
+                });
             }
         });
     });
-    $.ajax({
-        url: "@Url.Action("GetHighStats", "Home")",
-        method: "GET",
-        dataType: "json",
-        success: function (data) {
-            var a = data.lista;
-            
-            var series = [];
-            var categories = [];
-            $.each(a, function (index, item) {
-                series.push(parseFloat(parseFloat(item.rating).toFixed(2)));
-                categories.push(item.name);
-            });
+    if ($.cookie("histats")) {
+        var a = JSON.parse($.cookie("histats"));
+        var series = [];
+        var categories = [];
+        $.each(a, function (index, item) {
+            series.push(parseFloat(parseFloat(item.rating).toFixed(2)));
+            categories.push(item.name);
+        });
 
-            c2.xAxis[0].update({ categories: categories });
-            c2.series[0].setData(series);
-        }
-    });
+        c2.xAxis[0].update({ categories: categories });
+        c2.series[0].setData(series);
+    }
+    else {
+        
+        $.ajax({
+            url: "@Url.Action("GetHighStats", "Home")",
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                var a = data.lista;
+
+                var series = [];
+                var categories = [];
+                $.each(a, function (index, item) {
+                    series.push(parseFloat(parseFloat(item.rating).toFixed(2)));
+                    categories.push(item.name);
+                });
+
+                c2.xAxis[0].update({ categories: categories });
+                c2.series[0].setData(series);
+
+                
+                $.cookie("histats", JSON.stringify(data.lista), {
+                    expires: 1,
+                    path: "/"
+                });
+            }
+        });
+    }
 </script>

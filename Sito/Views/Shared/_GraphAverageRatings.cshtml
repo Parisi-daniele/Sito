@@ -38,17 +38,37 @@
             success: function (data) {
                 var a = JSON.parse(data.lista);
                 g.refresh(a);
+
+                $.cookie("avgstats", a, {
+                    expires: 1,
+                    path: "/"
+                });
             }
         });
     });
-    $.ajax({
-        url: "@Url.Action("GetAvgStats", "Home")",
-        method: "GET",
-        dataType: "json",
-        success: function (data) {
-            var a = JSON.parse(data.lista);
-            console.log(a);
-            g.refresh(a);
-        }
-    });
+
+    if ($.cookie("avgstats")) {
+        var a = JSON.parse($.cookie("avgstats"));
+        console.log(a);
+        g.refresh(a);
+    }
+    else {
+    
+        $.ajax({
+            url: "@Url.Action("GetAvgStats", "Home")",
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                var a = JSON.parse(data.lista);
+                console.log(a);
+                g.refresh(a);
+
+
+                $.cookie("avgstats", a, {
+                    expires: 1,
+                    path: "/"
+                });
+            }
+        });
+    }
 </script>

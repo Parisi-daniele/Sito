@@ -80,27 +80,51 @@
 
                 c1.xAxis[0].update({ categories: categories });
                 c1.series[0].setData(series);
+
+                $.cookie("lowstats", JSON.stringify(data.lista), {
+                    expires: 1,
+                    path: "/"
+                });
             }
         });
     });
 
-    $.ajax({
-        url: "@Url.Action("GetLowStats", "Home")",
-        method: "GET",
-        dataType: "json",
-        success: function (data) {
-            var a = data.lista;
+    if ($.cookie("lowstats")) {
+        var a = JSON.parse($.cookie("lowstats"));
+        var series = [];
+        var categories = [];
+        $.each(a, function (index, item) {
+            series.push(parseFloat(parseFloat(item.rating).toFixed(2)));
+            categories.push(item.name);
+        });
 
-            var series = [];
-            var categories = [];
-            $.each(a, function (index, item) {
-                series.push(parseFloat(parseFloat(item.rating).toFixed(2)));
-                categories.push(item.name);
-            });
+        c1.xAxis[0].update({ categories: categories });
+        c1.series[0].setData(series);
+    }
+    else {
+        $.ajax({
+            url: "@Url.Action("GetLowStats", "Home")",
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                var a = data.lista;
 
-            c1.xAxis[0].update({ categories: categories });
-            c1.series[0].setData(series);
+                var series = [];
+                var categories = [];
+                $.each(a, function (index, item) {
+                    series.push(parseFloat(parseFloat(item.rating).toFixed(2)));
+                    categories.push(item.name);
+                });
 
-        }
-    });
+                c1.xAxis[0].update({ categories: categories });
+                c1.series[0].setData(series);
+
+                
+                $.cookie("lowstats", JSON.stringify(data.lista), {
+                    expires: 1,
+                    path: "/"
+                });
+            }
+        });
+    }
 </script>
