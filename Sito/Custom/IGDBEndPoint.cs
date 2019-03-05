@@ -41,17 +41,7 @@ namespace Sito.Custom
                 )
             );
         }
-
-        public static List<GameDetails> GetBest10Games()
-        {
-            return GetInstance().getBest10Games();
-        }
-
-        public static List<GameDetails> GetWorst10Games()
-        {
-            return GetInstance().getWorst10Games();
-        }
-
+        
 
     }
 }

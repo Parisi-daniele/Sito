@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using Sito.Custom;
+using Sito.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,6 +15,13 @@ namespace Sito.Controllers
     {
         public ActionResult Index()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Index(GameModel gameModel)
+        {
+            string genere = gameModel.genere;
             return View();
         }
 
@@ -35,9 +43,9 @@ namespace Sito.Controllers
         public ActionResult GetAvgStats()
         {
             // string hi = Helper.GetResponseFromUrl("https://api-v3.igdb.com/games/?fields=name,rating&filter[rating][gte]=1&order=rating:desc&limit=10");
-            List<GameDetails> gd1 = IGDBEndPoint.GetBest10Games();
-            
-            List<GameDetails> gd2 = IGDBEndPoint.GetWorst10Games();
+            List<GameDetails> gd1 = IGDBEndPoint.GetInstance().getBest10Games();
+
+            List<GameDetails> gd2 = IGDBEndPoint.GetInstance().getWorst10Games();
             
             double avg = 0;
             gd1.ForEach(i => avg += i.rating);
@@ -51,14 +59,14 @@ namespace Sito.Controllers
         [HttpGet]
         public ActionResult GetHighStats()
         {
-            List<GameDetails> gd1 = IGDBEndPoint.GetBest10Games();
+            List<GameDetails> gd1 = IGDBEndPoint.GetInstance().getBest10Games();
             return Json(new { lista = gd1 }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public JsonResult GetLowStats()
         {
-            List<GameDetails> gd2 = IGDBEndPoint.GetWorst10Games();
+            List<GameDetails> gd2 = IGDBEndPoint.GetInstance().getWorst10Games();
             return Json(new { lista = gd2 }, JsonRequestBehavior.AllowGet);
         }
     }

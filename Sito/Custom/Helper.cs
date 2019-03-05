@@ -18,7 +18,6 @@ namespace Sito.Custom
             headers.ToList().ForEach(header => {
                 request.Headers.Add(header);
             });
-            // request.Headers.Add("user-key: 4aa74ccdaef43e0c08af80501237ca27");
 
             string responseString;
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();

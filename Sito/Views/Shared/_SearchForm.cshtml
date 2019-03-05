@@ -1,0 +1,12 @@
+﻿@model Sito.Models.GameModel
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class= "d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" }))
+{
+    <div class="input-group">
+        @Html.TextBoxFor(m => m.genere, new  { @class = "form-control bg-light border-0 small", placeholder="Cerca per genere..." })
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="button">
+                <i class="fas fa-search fa-sm"></i>
+            </button>
+        </div>
+    </div>
+}
