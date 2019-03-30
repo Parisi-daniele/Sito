@@ -50,5 +50,12 @@ namespace Sito.Tests.Controllers
             // Assert
             Assert.IsNotNull(result);
         }
+
+        [TestMethod]
+        public void provatest()
+        {
+            // Assert
+            Assert.IsNotNull(null);
+        }
     }
 }
